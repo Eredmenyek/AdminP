@@ -122,8 +122,7 @@
         <th>Kvalifikáció</th>
         <th>Verseny</th>
         <th>Tabella</th>
-     
-      </tr>
+     </tr>
     </thead>
     <tbody></tbody>
   </table>
@@ -261,7 +260,7 @@
       `;
       tableBody.appendChild(tr);
 
-      ["sprint", "sprintqual", "qual", "race", "egyeni", "csapat"].forEach(type => {
+      ["sprint", "sprintqual", "qual", "race", "tabella",].forEach(type => {
         const cellId = `cell-${index}-${type}`;
         const cell = document.getElementById(cellId);
         if (!cell || cell.classList.contains("disabled")) return;
