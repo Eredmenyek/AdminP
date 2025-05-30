@@ -260,6 +260,47 @@
               if (type === "csapat") addTeamLogo(cell);
             }
           }
+          document.querySelectorAll('#myTable td').forEach(cell => {
+ 
+  const img = cell.querySelector('img');
+  if (img) {
+    const src = img.src;
+  
+    if (!cell.querySelector('a')) {
+      const link = document.createElement('a');
+      link.href = src;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      
+     
+      cell.removeChild(img);
+      link.appendChild(img);
+      cell.appendChild(link);
+
+      
+      img.style.maxWidth = '100px';
+      img.style.cursor = 'pointer';
+    }
+  }
+
+  
+  else {
+    const link = cell.querySelector('a');
+    if (link && (link.href.match(/\.(jpeg|jpg|gif|png|bmp|webp)$/i))) {
+      
+      if (!link.querySelector('img')) {
+        const thumb = document.createElement('img');
+        thumb.src = link.href;
+        thumb.style.maxWidth = '100px';
+        thumb.style.cursor = 'pointer';
+        thumb.alt = 'Screenshot';
+
+        link.textContent = ''; 
+        link.appendChild(thumb);
+      }
+    }
+  }
+});
         });
         unsubscribeFns.push(unsub);
       });
