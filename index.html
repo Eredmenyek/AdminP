@@ -96,7 +96,7 @@
     .green-9 { background-color: #DFFF00 !important; color: black !important; font-weight: bold; }
     .green-10 { background-color: #F0FFF0 !important; color: black !important; font-weight: bold; }
 
-   
+    
 
     .track-img {
       width: 80px;
@@ -123,6 +123,7 @@
         <th>Kvalifikáció</th>
         <th>Verseny</th>
         <th>Tabella</th>
+        
       </tr>
     </thead>
     <tbody></tbody>
@@ -139,6 +140,9 @@
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
+
+  
+
 
   const races = [
     ["Ausztrál", "Melbourne", false],
@@ -215,7 +219,20 @@
     else if (!isNaN(value) && +value >= 4 && +value <= 10) cell.classList.add(`green-${value}`);
   }
 
-  
+  function addTeamLogo(cell) {
+    const value = cell.innerText.trim().toLowerCase();
+    const logo = teamLogos[value];
+    const existingImg = cell.querySelector("img");
+    if (existingImg) existingImg.remove();
+    if (logo) {
+      cell.innerText = "";
+      const img = document.createElement("img");
+      img.src = logo;
+      img.className = "team-logo";
+      cell.appendChild(img);
+    }
+  }
+
   function buildTable() {
     const tableBody = document.querySelector("#results-table tbody");
     tableBody.innerHTML = "";
@@ -240,8 +257,8 @@
         <td ${hasSprint ? 'contenteditable="true"' : 'class="disabled"'} id="cell-${index}-sprintqual"></td>
         <td contenteditable="true" id="cell-${index}-qual"></td>
         <td contenteditable="true" id="cell-${index}-race"></td>
-        <td contenteditable="true" id="cell-${index}->tabella"</td>
-       
+        <td contenteditable="true" id="cell-${index}-tabella"></td>
+        
       `;
       tableBody.appendChild(tr);
 
@@ -250,6 +267,12 @@
         const cell = document.getElementById(cellId);
         if (!cell || cell.classList.contains("disabled")) return;
 
+        cell.addEventListener("input", () => {
+          const value = cell.innerText.trim();
+          db.collection(collection).doc(cellId).set({ value });
+          applyStyle(cell);
+          if (type === "csapat") addTeamLogo(cell);
+        });
 
         const unsub = db.collection(collection).doc(cellId).onSnapshot(doc => {
           if (doc.exists) {
@@ -260,47 +283,6 @@
               if (type === "csapat") addTeamLogo(cell);
             }
           }
-          document.querySelectorAll('#myTable td').forEach(cell => {
- 
-  const img = cell.querySelector('img');
-  if (img) {
-    const src = img.src;
-  
-    if (!cell.querySelector('a')) {
-      const link = document.createElement('a');
-      link.href = src;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      
-     
-      cell.removeChild(img);
-      link.appendChild(img);
-      cell.appendChild(link);
-
-      
-      img.style.maxWidth = '100px';
-      img.style.cursor = 'pointer';
-    }
-  }
-
-  
-  else {
-    const link = cell.querySelector('a');
-    if (link && (link.href.match(/\.(jpeg|jpg|gif|png|bmp|webp)$/i))) {
-      
-      if (!link.querySelector('img')) {
-        const thumb = document.createElement('img');
-        thumb.src = link.href;
-        thumb.style.maxWidth = '100px';
-        thumb.style.cursor = 'pointer';
-        thumb.alt = 'Screenshot';
-
-        link.textContent = ''; 
-        link.appendChild(thumb);
-      }
-    }
-  }
-});
         });
         unsubscribeFns.push(unsub);
       });
@@ -311,5 +293,4 @@
 </script>
 </body>
 </html>
-
 
