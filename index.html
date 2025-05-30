@@ -97,13 +97,11 @@
     .green-10 { background-color: #F0FFF0 !important; color: black !important; font-weight: bold; }
 
    
-    
-  table td:last-child,
-  table th:last-child {
-    display: none;
-  }
 
-   
+    .track-img {
+      width: 80px;
+      height: auto;
+    }
   </style>
 </head>
 <body>
@@ -125,7 +123,7 @@
         <th>Kvalifikáció</th>
         <th>Verseny</th>
         <th>Tabella</th>
-     </tr>
+      </tr>
     </thead>
     <tbody></tbody>
   </table>
@@ -141,9 +139,6 @@
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-
-  
-
 
   const races = [
     ["Ausztrál", "Melbourne", false],
@@ -220,20 +215,7 @@
     else if (!isNaN(value) && +value >= 4 && +value <= 10) cell.classList.add(`green-${value}`);
   }
 
-  function addTeamLogo(cell) {
-    const value = cell.innerText.trim().toLowerCase();
-    const logo = teamLogos[value];
-    const existingImg = cell.querySelector("img");
-    if (existingImg) existingImg.remove();
-    if (logo) {
-      cell.innerText = "";
-      const img = document.createElement("img");
-      img.src = logo;
-      img.className = "team-logo";
-      cell.appendChild(img);
-    }
-  }
-
+  
   function buildTable() {
     const tableBody = document.querySelector("#results-table tbody");
     tableBody.innerHTML = "";
@@ -258,22 +240,16 @@
         <td ${hasSprint ? 'contenteditable="true"' : 'class="disabled"'} id="cell-${index}-sprintqual"></td>
         <td contenteditable="true" id="cell-${index}-qual"></td>
         <td contenteditable="true" id="cell-${index}-race"></td>
-        <td contenteditable="true" id="cell-${index}-tabella"></td>
-        
+        <td contenteditable="true" id="cell-${index}->tabella"</td>
+       
       `;
       tableBody.appendChild(tr);
 
-      ["sprint", "sprintqual", "qual", "race", "tabella",].forEach(type => {
+      ["sprint", "sprintqual", "qual", "race", "egyeni", "csapat"].forEach(type => {
         const cellId = `cell-${index}-${type}`;
         const cell = document.getElementById(cellId);
         if (!cell || cell.classList.contains("disabled")) return;
 
-        cell.addEventListener("input", () => {
-          const value = cell.innerText.trim();
-          db.collection(collection).doc(cellId).set({ value });
-          applyStyle(cell);
-          if (type === "csapat") addTeamLogo(cell);
-        });
 
         const unsub = db.collection(collection).doc(cellId).onSnapshot(doc => {
           if (doc.exists) {
@@ -294,4 +270,5 @@
 </script>
 </body>
 </html>
+
 
