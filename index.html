@@ -5,8 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2025-ös eredmények/MyTeam, Career</title>
   <style>
+  body.career-mode {
+  background-image: url('https://imgs.search.brave.com/rdZp9uNccb-FXmSbDLofhzwCGrBkx5HWUzctFALZkdo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/bW90b3JzcG9ydC5j/b20vaW1hZ2VzL21n/bC8yZDFabU1EWS9z/MTAwMC9oYWFzLXZm/LTI0LWxpdmVyeS5q/cGc'); no-repeat center center fixed;
+}
+
+body.myteam-mode {
+  background-image: url('https://imgs.search.brave.com/QkFGfHtPGGiEc9XliQFZt3vDR9Bla_TaRPmgLWfDPZU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jYWRp/bGxhY3NvY2lldHku/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDI0LzA1L0dNLUNh/ZGlsbGFjLUYxLUZv/cm11bGEtT25lLXJh/Y2UtY2FyLWNsb3Nl/LXVwLXBvd2VyLXVu/aXQtbWFudWZhY3R1/cmVyLTAwMS0xMDI0/eDY4My5qcGc'); no-repeat center center fixed;
+}
     body {
-      background: url("https://imgs.search.brave.com/QkFGfHtPGGiEc9XliQFZt3vDR9Bla_TaRPmgLWfDPZU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jYWRp/bGxhY3NvY2lldHku/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDI0LzA1L0dNLUNh/ZGlsbGFjLUYxLUZv/cm11bGEtT25lLXJh/Y2UtY2FyLWNsb3Nl/LXVwLXBvd2VyLXVu/aXQtbWFudWZhY3R1/cmVyLTAwMS0xMDI0/eDY4My5qcGc") no-repeat center center fixed;
       background-size: cover;
       color: white;
       font-family: Arial, sans-serif;
@@ -17,6 +23,26 @@
       padding: 40px 0;
       min-height: 100vh;
     }
+	@media (max-width: 600px) {
+  h2 {
+    font-size: 18px;
+  }
+
+  .season-buttons button,
+  .career-buttons button {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 4px;
+    font-size: 12px;
+  }
+
+  input {
+    font-size: 12px;
+  }
+}
     .container {
       background: transparent;
       color: white;
@@ -160,7 +186,7 @@ input {
     <h2 id="title">MyTeam - Cadillac (1. szezon)</h2>
     <div class="mode-switcher">
       <div class="mode-label">
-        <strong>Career:</strong>
+        <strong>Driver Career:</strong>
         <div class="career-buttons">
           <button id="career-1">1</button>
           <button id="career-2">2</button>
@@ -306,6 +332,8 @@ input {
       updateTitle();
       activateButtonGroup("myteam", mode === "myteam" ? season : 0);
       activateButtonGroup("career", mode === "career" ? season : 0);
+	  document.body.classList.remove("career-mode", "myteam-mode");
+document.body.classList.add(`${mode}-mode`);
 
       const docSnap = await getDoc(getDocRef());
       const data = docSnap.exists() ? docSnap.data() : {};
@@ -368,5 +396,5 @@ input {
   </script>
 </body>
 </html>
-</html>
+
 
