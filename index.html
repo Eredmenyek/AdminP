@@ -12,16 +12,17 @@
 body.myteam-mode {
   background-image: url('https://imgs.search.brave.com/QkFGfHtPGGiEc9XliQFZt3vDR9Bla_TaRPmgLWfDPZU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jYWRp/bGxhY3NvY2lldHku/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDI0LzA1L0dNLUNh/ZGlsbGFjLUYxLUZv/cm11bGEtT25lLXJh/Y2UtY2FyLWNsb3Nl/LXVwLXBvd2VyLXVu/aXQtbWFudWZhY3R1/cmVyLTAwMS0xMDI0/eDY4My5qcGc'); no-repeat center center fixed;
 }
-   body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('') center center / cover no-repeat;
-  z-index: -1;
-}
+     body {
+     background-size: cover;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 0;
+      height: 100%;
+    }
 	@media (max-width: 600px) {
   h2 {
     font-size: 18px;
